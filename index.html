@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WatchMate - Find Your Movie Buddies</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landingPage" class="landing-page">
+        <div class="container">
+            <div class="landing-content">
+                <div class="cinema-illustration">
+                    🎭
+                </div>
+                <div class="landing-right">
+                    <h1 class="logo">WatchMate</h1>
+                    <p class="tagline">Find Your Movie Buddies in Pune</p>
+                    <div class="auth-buttons">
+                        <button class="btn btn-google" onclick="signIn('google')">
+                            <i class="fab fa-google"></i>
+                            Continue with Google
+                        </button>
+                        <button class="btn btn-email" onclick="signIn('email')">
+                            <i class="fas fa-envelope"></i>
+                            Sign in with Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="main-app">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="app-logo">WatchMate</div>
+                    <div class="header-right">
+                        <select class="city-selector" id="citySelector">
+                            <option value="newyork">📍 New York</option>
+                            <option value="pune">📍 Pune</option>
+                            <option value="mumbai">📍 Mumbai</option>
+                            <option value="delhi">📍 Delhi</option>
+                            <option value="bangalore">📍 Bangalore</option>
+                            <option value="losangeles">📍 Los Angeles</option>
+                            <option value="chicago">📍 Chicago</option>
+                            <option value="london">📍 London</option>
+                        </select>
+                        <div class="profile-avatar" onclick="openProfile()">
+                            <span id="userInitials">AK</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container">
+            <div class="main-content">
+                <!-- Movies Section -->
+                <div class="movies-section">
+                    <h2>🔥 Trending Movies</h2>
+                    <div class="movie-grid" id="movieGrid">
+                        <!-- Movies will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <h3>💬 Active Chats</h3>
+                    <div class="chat-list" id="chatList">
+                        <!-- Chat list will be loaded here -->
+                    </div>
+                    
+                    <h3>🎬 Your Matches</h3>
+                    <div id="matchesList">
+                        <!-- Matches will be loaded here -->
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h3>🍿 Popcorn Points</h3>
+                        <div class="stat-item">
+                            <div class="stat-number" id="popcornPoints">120</div>
+                            <div class="stat-label">Points Earned</div>
+                            <div class="popcorn-meter">
+                                <div class="popcorn-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Profile Dashboard</h2>
+                <button class="close-btn" onclick="closeProfile()">&times;</button>
+            </div>
+            
+            <!-- User Info Section -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #FFD700, #FF3B30); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: #141414; margin: 0 auto 15px;">
+                    AK
+                </div>
+                <h3 style="color: #FFD700; margin-bottom: 5px; font-family: 'Poppins', sans-serif;">Alex Kumar</h3>
+                <p style="color: #ccc; margin-bottom: 15px;">📍 New York</p>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span style="font-size: 1.5rem;">🍿</span>
+                    <span style="color: #FFD700; font-weight: bold; font-size: 1.2rem;" id="profilePopcornPoints">120</span>
+                    <span style="color: #ccc;">Popcorn Points</span>
+                </div>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="profileMoviesWatched">0</div>
+                    <div class="stat-label">Movies Watched</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="profileFriendsCount">0</div>
+                    <div class="stat-label">Friends</div>
+                </div>
+            </div>
+
+            <!-- Popcorn Progress -->
+            <div style="margin: 20px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h3 style="color: #FFD700; margin: 0;">🍿 Progress to Next Reward</h3>
+                    <span style="color: #ccc; font-size: 0.9rem;" id="progressText">120 / 500</span>
+                </div>
+                <div class="popcorn-meter">
+                    <div class="popcorn-fill" id="profilePopcornFill"></div>
+                </div>
+                <p style="color: #999; font-size: 0.8rem; margin-top: 5px;">Next reward: Premium Movie Themes unlock!</p>
+            </div>
+
+            <!-- Achievements Section -->
+            <div style="margin-top: 25px;">
+                <h3 style="color: #FFD700; margin-bottom: 15px;">🏆 Recent Achievements</h3>
+                <div style="display: grid; gap: 10px;">
+                    <div style="background: #333; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 1.5rem;">🎬</span>
+                        <div>
+                            <div style="color: #FFD700; font-weight: 500;">Movie Explorer</div>
+                            <div style="color: #ccc; font-size: 0.8rem;">Joined WatchMate community</div>
+                        </div>
+                    </div>
+                    <div style="background: #333; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px; opacity: 0.5;">
+                        <span style="font-size: 1.5rem;">👥</span>
+                        <div>
+                            <div style="color: #999; font-weight: 500;">Social Butterfly</div>
+                            <div style="color: #666; font-size: 0.8rem;">Make 5 friends (0/5)</div>
+                        </div>
+                    </div>
+                    <div style="background: #333; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px; opacity: 0.5;">
+                        <span style="font-size: 1.5rem;">🎭</span>
+                        <div>
+                            <div style="color: #999; font-weight: 500;">Movie Night Host</div>
+                            <div style="color: #666; font-size: 0.8rem;">Organize first movie meetup (0/1)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorite Genres -->
+            <div style="margin-top: 25px;">
+                <h3 style="color: #FFD700; margin-bottom: 15px;">🎯 Favorite Genres</h3>
+                <div class="movie-genres">
+                    <span class="genre-tag" style="opacity: 0.6;">Select your preferences...</span>
+                </div>
+                <button style="background: linear-gradient(45deg, #FFD700, #FFA500); color: #141414; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; margin-top: 10px; font-size: 0.9rem;">
+                    + Add Genres
+                </button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="margin-top: 30px; display: flex; gap: 10px;">
+                <button style="flex: 1; background: #333; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 500;">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+                <button style="flex: 1; background: linear-gradient(45deg, #FFD700, #FFA500); color: #141414; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-share"></i> Share Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Drawer -->
+    <div id="chatDrawer" class="chat-drawer">
+        <div class="chat-header">
+            <h3 style="color: #FFD700;" id="chatTitle">💬 Your Chats</h3>
+            <button class="chat-close" onclick="closeChat()">&times;</button>
+        </div>
+        
+        <!-- Chat List View -->
+        <div id="chatListView" class="chat-list-view">
+            <div style="padding: 20px;">
+                <h4 style="color: #FFD700; margin-bottom: 15px;">Active Conversations</h4>
+                <div id="drawerChatList">
+                    <!-- Chat list will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Individual Chat View -->
+        <div id="chatConversationView" class="chat-conversation-view" style="display: none;">
+            <div class="movie-context" id="movieContext" style="display: none;">
+                🎬 Discussing: "Select a movie"
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div style="text-align: center; color: #666; padding: 50px 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">💬</div>
+                    <p>Select a conversation to start chatting!</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button onclick="showChatList()" style="background: #333; border: none; color: #FFD700; padding: 8px; border-radius: 5px; cursor: pointer;">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <input type="text" placeholder="Type a message..." id="messageInput" disabled style="flex: 1;">
+                    <button class="send-btn" onclick="sendMessage()" disabled>Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item active">
+                <div class="nav-icon">🎬</div>
+                <div class="nav-label">Movies</div>
+            </div>
+            <div class="nav-item" onclick="showMatches()">
+                <div class="nav-icon">💫</div>
+                <div class="nav-label">Matches</div>
+            </div>
+            <div class="nav-item" onclick="openChatDrawer()" class="nav-item">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Chat</div>
+            </div>
+            <div class="nav-item" onclick="openProfile()">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Profile</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+<script src="script.js" defer></script>
+</body>
+</html>
